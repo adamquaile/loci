@@ -1,6 +1,6 @@
 {
     "name": "adamquaile/loci",
-    "description": 
+    "description": "Tool for rapidly building in-memory repository classes in PHP",
     "require": {
         "symfony/property-access": "~2.5"
     },
@@ -9,7 +9,7 @@
     },
     "autoload": {
         "psr-0": {
-            "": ["src/", "spec/"]
+            "AdamQuaile\\Loci": ["src/"]
         }
     },
     "config": {

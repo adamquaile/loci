@@ -48,6 +48,33 @@ final class ObjectRepositorySpec extends ObjectBehavior
         $this->findBy(['a.b' => 2])->shouldBeLike([$obj1]);
     }
 
+    function it_supports_finding_single_using_similar_api()
+    {
+        $obj1 = (object) ['a' => (object) ['b' => 2]];
+        $this->add($obj1);
+        $this->findOneBy(['a.b' => 2])->shouldBeLike($obj1);
+    }
+
+    function it_throws_exceptions_if_find_one_returns_unexpected_number_of_items()
+    {
+        $obj1 = (object) ['a' => 1];
+        $obj2 = (object) ['a' => 1];
+        $this->add($obj1);
+        $this->add($obj2);
+        $this
+            ->shouldThrow('AdamQuaile\Loci\Exceptions\UnexpectedNumberOfResultsException')
+            ->duringFindOneBy([
+                'a' => 2
+            ])
+        ;
+        $this
+            ->shouldThrow('AdamQuaile\Loci\Exceptions\UnexpectedNumberOfResultsException')
+            ->duringFindOneBy([
+                'a' => 1
+            ])
+        ;
+    }
+
     function it_allows_searching_by_callback()
     {
         $odd    = (object) ['a' => 1];

@@ -4,6 +4,7 @@ namespace AdamQuaile\Loci;
 
 use AdamQuaile\Loci\Exceptions\ObjectExpectedException;
 use AdamQuaile\Loci\Exceptions\TypeRestrictedException;
+use AdamQuaile\Loci\Exceptions\UnexpectedNumberOfResultsException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class ObjectRepository
@@ -69,6 +70,16 @@ class ObjectRepository
         );
     }
 
+    public function findOneBy($criteria)
+    {
+        $objects = $this->findBy($criteria);
+        if (count($objects) !== 1) {
+            throw new UnexpectedNumberOfResultsException(1, count($objects));
+        }
+
+        return $objects[0];
+    }
+
     private function findMultipleUsingFilter(callable $filter)
     {
         return $this->findByCallback($filter);
@@ -98,4 +109,6 @@ class ObjectRepository
         };
         return $filters;
     }
+
+
 }

@@ -81,6 +81,16 @@ class ObjectRepository
         );
     }
 
+    public function findOneBy($criteria)
+    {
+        $objects = $this->findBy($criteria);
+        if (count($objects) !== 1) {
+            throw new UnexpectedNumberOfResultsException(1, count($objects));
+        }
+
+        return $objects[0];
+    }
+
     private function findMultipleUsingFilter(callable $filter)
     {
         return $this->findByCallback($filter);

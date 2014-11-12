@@ -56,9 +56,12 @@ final class ObjectRepositorySpec extends ObjectBehavior
         $this->add($odd);
         $this->add($even);
 
-        $this->findByCallback(function ($obj) {
+        $filterFn = function ($obj) {
             return $obj->a % 2 == 0;
-        })->shouldReturn([$even]);
+        };
+        $this->findByCallback($filterFn)->shouldReturn([$even]);
+
+        $this->findOneByCallback($filterFn)->shouldReturn($even);
     }
 
     function it_can_be_restricted_to_a_type()
@@ -69,6 +72,14 @@ final class ObjectRepositorySpec extends ObjectBehavior
         $this
             ->shouldThrow('AdamQuaile\Loci\Exceptions\TypeRestrictedException')
             ->duringAdd(new \DateTimeZone('UTC'));
+    }
+
+    function it_throws_exception_when_unexpected_number_of_results_returned()
+    {
+        $this->add((object) []);
+        $this
+            ->shouldThrow('AdamQuaile\Loci\Exceptions\UnexpectedNumberOfResultsException')
+            ->duringFindOneByCallback(function() { return false; });
     }
 
 }

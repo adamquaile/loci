@@ -1,5 +1,7 @@
 # Loci
 
+*This tool is still in development stage. Use with caution, and be restrictive with the version you choose in `composer` so you don't break stuff when you run `composer update`.*
+
 Tool for rapidly building in-memory repository classes in PHP. Particularly useful
 when building automated tests of your domain layer.
 
